@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 from coordinator import Coordinator
 
 node_paths = ['./db_node1', './db_node2', './db_node3'] # Define paths for each simulated node's LevelDB instance

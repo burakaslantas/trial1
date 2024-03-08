@@ -1,2 +1,5 @@
-2024/03/08-14:38:28.650154 0x7ff84d51e7c0 Creating DB ./db_node3 since it was missing.
-2024/03/08-14:38:28.763973 0x7ff84d51e7c0 Delete type=3 #1
+2024/03/08-19:27:14.756252 0x7ff84d51e7c0 Recovering log #55
+2024/03/08-19:27:14.756994 0x7ff84d51e7c0 Level-0 table #58: started
+2024/03/08-19:27:14.777244 0x7ff84d51e7c0 Level-0 table #58: 8233 bytes OK
+2024/03/08-19:27:14.838752 0x7ff84d51e7c0 Delete type=3 #53
+2024/03/08-19:27:14.838796 0x7ff84d51e7c0 Delete type=0 #55
