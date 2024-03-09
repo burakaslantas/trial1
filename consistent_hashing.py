@@ -8,7 +8,7 @@ class ConsistentHashing:
         self.ring = []
         self._sorted_keys = []
         if nodes:
-            for node in nodes: #sdcsd
+            for node in nodes:
                 self.add_node(node)
 
     def _hash(self, key):
