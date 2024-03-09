@@ -1,56 +1,56 @@
 """
-############################################
-Cache Hit Efficiency
-############################################
+########################################################
+Simulation Case 1: Load Distribution Analysis
+########################################################
 
-Objective: To demonstrate the efficiency of the cache by repeatedly accessing a small subset of keys.
+Objective: To visualize how keys are distributed across the nodes in your distributed key-value store.
 
-Procedure:
-    1- Pre-populate the LevelDB nodes with a large dataset (e.g., 10,000 key-value pairs).
-    2- Populate the cache with a subset of keys (e.g., the first 100 keys).
-    3- Repeatedly access these keys in a loop to ensure they are served from the cache.
+Parameters to Input:
+    * Number of nodes
+    * Number of keys to insert
+    * Number of replicas per node
 
-Expected Outcome:
-    * The cache hit rate should be high, close to 100% for these keys.
-    * Response times for these get operations should be significantly lower than those for keys not in the cache.
+Expected Output:
+    * A histogram showing the number of keys managed by each node.
 """
 import sys
 sys.path.append('.')
 import matplotlib.pyplot as plt
-import numpy as np
-from coordinator import Coordinator
-import logging
+from consistent_hashing import ConsistentHashing
+import hashlib
 
-# Setup logging
-logging.basicConfig(level=logging.INFO, format='%(message)s')
-logger = logging.getLogger()
+def simulate_load_distribution(num_nodes, num_keys, replicas):
+    # Initialize consistent hashing with specified number of replicas
+    hashing = ConsistentHashing(replicas=replicas)
+    
+    # Add nodes to the ring
+    for i in range(num_nodes):
+        node_name = f'node_{i}'
+        hashing.add_node(node_name)
+    
+    # Simulate inserting keys and track how many keys each node gets
+    node_distribution = {f'node_{i}': 0 for i in range(num_nodes)}
+    for i in range(num_keys):
+        key = f'key_{i}'
+        node = hashing.get_node(key)
+        node_distribution[node] += 1
+    
+    # Plotting
+    nodes = list(node_distribution.keys())
+    keys_per_node = list(node_distribution.values())
+    
+    plt.figure(figsize=(10, 6))
+    plt.bar(nodes, keys_per_node, color='skyblue')
+    plt.xlabel('Nodes')
+    plt.ylabel('Number of Keys')
+    plt.title('Load Distribution Across Nodes')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
-# Initialize the coordinator (update paths as needed)
-node_paths = ['./db_node1', './db_node2', './db_node3']
-coordinator = Coordinator(node_paths, cache_capacity=100)
+# Input parameters
+num_nodes = int(input("Enter the number of nodes: "))
+num_keys = int(input("Enter the number of keys to insert: "))
+replicas = int(input("Enter the number of replicas per node: "))
 
-hits, misses = 0, 0
-
-# Function to simulate cache hits and misses
-def simulate_cache_hits_misses(key_range, accesses):
-    global hits, misses
-    for _ in range(accesses):
-        key = f'key{np.random.randint(0, key_range)}'
-        if coordinator.get(key) is not None:
-            hits += 1
-        else:
-            misses += 1
-
-# Populate cache with a subset of keys
-for i in range(10000):
-    coordinator.put(f'key{i}', f'value{i}')
-
-simulate_cache_hits_misses(10000, 10000)
-
-# Log and plot results
-logger.info(f"Cache Hits: {hits}, Cache Misses: {misses}")
-plt.figure(figsize=(5, 3))
-plt.bar(['Hits', 'Misses'], [hits, misses], color=['green', 'red'])
-plt.title('Cache Hits vs Misses')
-plt.ylabel('Count')
-plt.show()
+simulate_load_distribution(num_nodes, num_keys, replicas)
