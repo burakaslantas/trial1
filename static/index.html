@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database Node Viewer</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Database Node Dashboard</h1>
+    </header>
+    <main>
+        <section id="charts">
+            <h2>Key Distribution Chart</h2>
+            <canvas id="keyDistributionChart"></canvas>
+        </section>
+        <section id="nodeData">
+            <h2>Node Key-Value Pairs</h2>
+            <!-- Tables will be dynamically inserted here by JavaScript -->
+        </section>
+        <section id="nodeDetails">
+            <h2>Node Details</h2>
+            <div id="nodeInfo"></div>
+        </section>
+        <section id="systemHealth">
+            <h2>System Health</h2>
+            <div id="healthStats"></div>
+        </section>
+        <section id="systemStats">
+            <h2>System Statistics</h2>
+            <div id="systemStatsDetails"></div>
+        </section>
+    </main>    
+    <footer>
+        <p>&copy; 2024 Node Management Dashboard</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

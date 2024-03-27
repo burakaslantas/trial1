@@ -31,7 +31,7 @@ if __name__ == "__main__":
     coordinator = Coordinator(node_urls=node_urls, cache_capacity=10, replicas=50)
 
     # Fill in some data for demonstration purposes
-    for i in range(100):
+    for i in range(1000):
         coordinator.put("key" + str(i), "value" + str(i))
     
     # Fetch and print the data for demonstration purposes
