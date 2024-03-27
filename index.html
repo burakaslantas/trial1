@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consistent Hashing Visualization</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <div id="hashingRing"></div>
+    <div id="nodes"></div>
+    <div id="cache"></div>
+
+    <script>
+        function drawHashingRing(data) {
+            const svg = d3.select("#hashingRing")
+                          .append("svg")
+                          .attr("width", 600)
+                          .attr("height", 600);
+            const radius = 200;
+            const circle = svg.append("circle")
+                              .attr("cx", 300)
+                              .attr("cy", 300)
+                              .attr("r", radius)
+                              .style("fill", "none")
+                              .style("stroke", "black");
+
+            // Further implementation needed to visualize the hashing ring
+        }
+
+        function updateNodes(data) {
+            const nodesDiv = d3.select("#nodes");
+            nodesDiv.html(""); // Clear existing data
+
+            // Populate with new data
+            data.forEach(node => {
+                nodesDiv.append("div").text(`Node: ${node}`);
+                // Add more details for each node
+            });
+        }
+
+        function updateCache(data) {
+            const cacheDiv = d3.select("#cache");
+            cacheDiv.html(""); // Clear existing data
+
+            // Populate with new data
+            Object.keys(data).forEach(key => {
+                cacheDiv.append("div").text(`Key: ${key}, Value: ${data[key]}`);
+            });
+        }
+
+        function fetchData() {
+            // Fetch ring data and draw/refresh the consistent hashing ring
+            fetch('/ring')
+                .then(response => response.json())
+                .then(data => drawHashingRing(data));
+
+            // Fetch nodes data and update the display
+            fetch('/nodes')
+                .then(response => response.json())
+                .then(data => updateNodes(data));
+
+            // Fetch cache data and update the display
+            fetch('/cache')
+                .then(response => response.json())
+                .then(data => updateCache(data));
+        }
+
+        // Initial fetch and setup periodic refresh
+        fetchData();
+        setInterval(fetchData, 5000); // Refresh data every 5 seconds
+    </script>
+</body>
+</html>
